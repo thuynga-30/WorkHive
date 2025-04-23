@@ -1,0 +1,26 @@
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp">
+
+    <!-- Nền logo mờ -->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo_workhive"
+        android:scaleType="centerCrop"
+        android:alpha="0.05"
+        android:adjustViewBounds="true" />
+
+    <!-- Chat bubble -->
+    <TextView
+        android:id="@+id/tvChatMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="@drawable/bg_chat_bubble"
+        android:textColor="@android:color/black"
+        android:textSize="15sp"
+        android:text="This is a message" />
+</FrameLayout>

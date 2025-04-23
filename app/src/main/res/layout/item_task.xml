@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:elevation="4dp"
+    card_view:cardCornerRadius="8dp"
+    android:padding="12dp">
+
+    <!-- Dùng FrameLayout để chồng hình nền mờ -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Hình nền logo hơi ẩn (opacity thấp) -->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/logo_workhive"
+            android:scaleType="centerCrop"
+            android:alpha="0.08"
+            android:layout_gravity="center" />
+
+        <!-- Nội dung chính của task -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/tvTaskTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Implement Authentication"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="#1B5E20" />
+
+            <TextView
+                android:id="@+id/tvTaskDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Implement login and user session"
+                android:textSize="14sp"
+                android:textColor="#2E7D32"
+                android:layout_marginTop="4dp" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp">
+
+                <TextView
+                    android:id="@+id/tvTaskDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Due: Apr 20"
+                    android:textColor="#4CAF50"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tvTaskStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="In Progress"
+                    android:textColor="@color/green_batteo_dark"
+                    android:layout_marginStart="16dp"
+                    android:textStyle="italic"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
+</androidx.cardview.widget.CardView>

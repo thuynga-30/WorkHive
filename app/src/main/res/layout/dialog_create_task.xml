@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- 🌄 Ảnh nền mờ -->
+    <ImageView
+        android:id="@+id/bgImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/logo_workhive"
+        android:scaleType="centerCrop"
+        android:alpha="0.1"
+        android:contentDescription="Background" />
+
+    <!-- 📄 Nội dung form tạo task -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/etTaskTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Task title"
+                android:backgroundTint="#C8E6C9"/>
+
+            <EditText
+                android:id="@+id/etTaskDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Description"
+                android:inputType="textMultiLine"
+                android:minLines="2"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="#C8E6C9"/>
+
+            <Spinner
+                android:id="@+id/spinnerPriority"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"/>
+
+            <DatePicker
+                android:id="@+id/datePicker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" />
+
+            <CheckBox
+                android:id="@+id/cbAssignJohn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="John Doe" />
+
+            <CheckBox
+                android:id="@+id/cbAssignAlice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Alice Smith" />
+
+            <Button
+                android:id="@+id/btnCreateTask"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Create Task"
+                android:layout_marginTop="12dp"
+                android:layout_gravity="end"
+                android:backgroundTint="#C8E6C9"
+                android:textColor="@color/white" />
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

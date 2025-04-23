@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- 🌄 Ảnh nền mờ -->
+    <ImageView
+        android:id="@+id/bgImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/logo_workhive"
+        android:alpha="0.1"
+        android:contentDescription="Background" />
+
+    <!-- 📄 Layout nội dung -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/etTeamName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter team name"
+                android:backgroundTint="@color/green_batteo_dark" />
+
+            <EditText
+                android:id="@+id/etTeamDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Describe the team"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="@color/green_batteo_dark" />
+
+            <CheckBox
+                android:id="@+id/cbJohn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="John Doe" />
+
+            <CheckBox
+                android:id="@+id/cbAlice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Alice Smith" />
+
+            <CheckBox
+                android:id="@+id/cbMark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mark Johnson" />
+
+            <Button
+                android:id="@+id/btnCreateTeam"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Create Team"
+                android:layout_marginTop="12dp"
+                android:layout_gravity="end"
+                android:backgroundTint="@color/green_batteo_primary"
+                android:textColor="@color/white" />
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

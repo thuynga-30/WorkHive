@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="blue_500">#2196F3</color>
+    <color name="blue_700">#1976D2</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="gray">#666666</color>
+    <color name="light_gray">#EEEEEE</color>
+
+        <color name="colorAccent">#03DAC5</color>
+
+        <!-- Chủ đạo -->
+        <color name="colorPrimary">#4CAF50</color>
+        <color name="colorPrimaryVariant">#388E3C</color>
+        <color name="colorSecondary">#A5D6A7</color>
+
+        <!-- Nền -->
+        <color name="colorBackground">#FFFFFF</color>
+        <color name="colorSurface">#F1F8E9</color>
+
+        <!-- Màu chữ / icon -->
+        <color name="colorOnPrimary">#FFFFFF</color>
+        <color name="colorOnBackground">#212121</color>
+        <color name="colorOnSurface">#2E7D32</color>
+        <color name="green_batteo">#4CAF50</color> <!-- hoặc tuỳ mã xanh bạn chọn -->
+        <color name="background_light">#F1F8E9</color> <!-- nền nhạt dễ chịu -->
+        <color name="green_batteo_primary">#4CAF50</color>
+
+        <color name="green_batteo_light">#E8F5E9</color> <!-- Xanh lá nhạt nền Card -->
+        <color name="green_batteo_dark">#1B5E20</color> <!-- Xanh lá đậm trạng thái -->
+
+
+
+
+</resources>

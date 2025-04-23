@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        android:id="@+id/dialogMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nhập user_name người bạn muốn xoá:"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="12dp" />
+
+    <EditText
+        android:id="@+id/inputMemberName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nhập user_name"
+        android:inputType="textPersonName" />
+</LinearLayout>
