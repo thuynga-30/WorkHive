@@ -4,10 +4,7 @@
         android:id="@+id/menu_home"
         android:icon="@drawable/ic_home"
         android:title="Home" />
-    <item
-        android:id="@+id/menu_dashboard"
-        android:icon="@drawable/ic_dashboard"
-        android:title="Dashboard" />
+
     <item
         android:id="@+id/menu_chat"
         android:icon="@drawable/ic_chat"
@@ -20,4 +17,8 @@
         android:id="@+id/menu_teams"
         android:icon="@drawable/ic_teams"
         android:title="Teams" />
+    <item
+        android:id="@+id/menu_dashboard"
+        android:icon="@drawable/ic_dashboard"
+        android:title="Dashboard" />
 </menu>

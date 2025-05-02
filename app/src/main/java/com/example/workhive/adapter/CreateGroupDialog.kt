@@ -1,4 +1,4 @@
-package com.example.workhive.view
+package com.example.workhive.adapter
 
 import android.content.Context.MODE_PRIVATE
 import android.os.Bundle

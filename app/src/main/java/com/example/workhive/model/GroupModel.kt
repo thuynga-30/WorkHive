@@ -10,8 +10,8 @@ data class ApiResponse(
 
 data class Group(
     val group_id: Int,
-    val name: String,
-    val description: String,
+    var name: String,
+    var description: String,
     val created_by: String,
     val members: MutableList<String>
 )
@@ -48,4 +48,13 @@ data class DeleteResponse(
     val success: Boolean,
     val message: String
 )
-
+data class GroupResponse(
+    val success: Boolean,
+    val message: String,
+    val group: Group?
+)
+data class UpdateGroupRequest(
+    val group_id: Int,
+    val name: String,
+    val description: String
+)

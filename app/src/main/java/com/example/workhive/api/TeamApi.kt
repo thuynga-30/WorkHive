@@ -15,6 +15,12 @@ interface TeamApi {
         @Query("group_id") groupId: Int
     ): Call<MemberResponse>
 
+    @GET("team_manager.php")
+    fun getGroupById(
+        @Query("get_group_by_id") flag: Int = 1,
+        @Query("group_id") groupId: Int
+    ): Call<GroupResponse>
+
     @POST("team_manager.php")
     fun createGroup(
         @Header("Authorization") userName: String,
@@ -34,4 +40,9 @@ interface TeamApi {
     fun removeMember(
         @Header("Authorization") userName: String,
         @Body body: RemoveUserRequest): Call<DeleteResponse>
+    @PUT("team_manager.php")
+    fun updateGroup(
+        @Header("Authorization") userName: String,
+        @Body body: UpdateGroupRequest
+    ): Call<DeleteResponse>
 }

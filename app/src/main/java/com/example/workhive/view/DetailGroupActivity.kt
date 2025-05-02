@@ -9,7 +9,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.workhive.R
 import com.example.workhive.adapter.AddMemberDialog
+import com.example.workhive.adapter.CreateTaskDialog
 import com.example.workhive.adapter.DetailAdapter
+import com.example.workhive.adapter.TaskAdapter
+import com.example.workhive.adapter.UpdateGroupDialog
+import com.example.workhive.api.RetrofitTask
 import com.example.workhive.api.RetrofitTeam
 import com.example.workhive.databinding.TeamsDetailBinding
 import com.example.workhive.model.*
@@ -20,8 +24,11 @@ import retrofit2.Response
 class DetailGroupActivity: AppCompatActivity() {
     private lateinit var binding: TeamsDetailBinding
     private lateinit var adapter: DetailAdapter
+    private lateinit var taskAdapter: TaskAdapter
     private lateinit var group: Group
+    private lateinit var task: Task
     private var members: MutableList<Members> = mutableListOf()  // <- sửa thành mutableList
+    private var tasks = mutableListOf<Task>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= TeamsDetailBinding.inflate(layoutInflater)
@@ -40,23 +47,138 @@ class DetailGroupActivity: AppCompatActivity() {
         adapter = DetailAdapter(members)
         binding.membersRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.membersRecyclerView.adapter = adapter
+        binding.newTaskButton.setOnClickListener{
+            showAddTask(groupId)
+        }
         binding.addMemberButton.setOnClickListener {
             showAddMember(group)
         }
         if (userName == createdBy) {
-            binding.removeButton.text = "Xoá thành viên"
+            binding.removeButton.text = "Remove member"
             binding.removeButton.setOnClickListener {
                 showInputMemberToDeleteDialog()
             }
         } else {
-            binding.removeButton.text = "Rời nhóm"
+            binding.removeButton.text = "Leave group"
             binding.removeButton.setOnClickListener {
                 confirmLeaveGroup(userName)
             }
         }
+        binding.updateButton.setOnClickListener {
+            showUpdateGroup(group)
+        }
         loadGroupMembers(groupId)
+        taskAdapter = TaskAdapter(
+            tasks,
+            onGroupClicked = { task ->
+//
+            },
+            onGroupDelete ={ task ->
+                deleteTask(task)
+            })
+
+        binding.tasksRecyclerView.layoutManager = LinearLayoutManager(this)
+        binding.tasksRecyclerView.adapter = taskAdapter
+        loadTask(groupId)
+    }
+
+    private fun deleteTask(task: Task) {
+        val index = tasks.indexOfFirst { it.group_id == task.group_id }
+        if (index != -1) {
+            tasks.removeAt(index)
+            taskAdapter.notifyItemRemoved(index)
+            Toast.makeText(this, "Xoá task thành công", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+
+    private fun showAddTask(groupId: Int) {
+        val dialog = CreateTaskDialog(groupId){
+            loadTask(groupId)
+        }
+        dialog.show(supportFragmentManager, "CreateGroupDialog")
+    }
+
+    private fun loadTask(groupId: Int) {
+        RetrofitTask.taskApi.getTask(groupId).enqueue(object: Callback<GetTasksResponse>{
+            override fun onResponse(call: Call<GetTasksResponse>, response: Response<GetTasksResponse>){
+                if (response.isSuccessful) {
+                    val tasksResponse = response.body()
+                    if (tasksResponse != null && tasksResponse.success) {
+                        tasks.clear()
+                        tasksResponse.tasks?.let { tasks.addAll(it) }
+                        taskAdapter.notifyDataSetChanged()
+
+                    } else {
+                        Log.e("API_ERROR", "Response body: ${response.errorBody()?.string()}")
+                        Toast.makeText(this@DetailGroupActivity, "Lỗi: ${tasksResponse?.success}", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Log.e("DEBUG_API_TASK", "Error body: ${response.errorBody()?.string()}")
+                    Toast.makeText(this@DetailGroupActivity, "Server error", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<GetTasksResponse>, t: Throwable) {
+                Log.e("DEBUG_API_TASK", "Connection failed: ${t.message}")
+                Toast.makeText(this@DetailGroupActivity, "Connection failed: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
 
     }
+
+    private fun showUpdateGroup(group: Group) {
+        val dialog = UpdateGroupDialog(
+            group.group_id,
+            currentName = group.name,
+            currentDesc = group.description,
+            onSubmit = { groupName,groupDescription ->
+                group.name = groupName
+                group.description =groupDescription
+                loadGroupDetail(group.group_id)
+            }
+        )
+        dialog.show(
+            (binding.root.context as AppCompatActivity).supportFragmentManager,
+            "UpdateGroupDialog"
+        )
+    }
+
+    private fun loadGroupDetail(groupId: Int) {
+
+        RetrofitTeam.teamApi.getGroupById(1,groupId).enqueue(object : Callback<GroupResponse> {
+            override fun onResponse(call: Call<GroupResponse>, response: Response<GroupResponse>) {
+                Log.d("DEBUG_API", "Response code: ${response.code()}")
+                if (response.isSuccessful && response.body()?.success == true) {
+                    val groupData = response.body()?.group
+                    if (groupData != null) {
+                        // Cập nhật lại biến group
+                        group = Group(
+                            groupData.group_id,
+                            groupData.name,
+                            groupData.description,
+                            groupData.created_by,
+                            arrayListOf() // không cần cập nhật members ở đây
+                        )
+                        binding.teamName.text = group.name
+                        binding.teamDescription.text = group.description
+
+                        Toast.makeText(this@DetailGroupActivity, "Cập nhật nhóm thành công", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Log.e("DEBUG_API", "API lỗi: ${response.errorBody()?.string()}")
+                    Toast.makeText(this@DetailGroupActivity, "Không tải được thông tin nhóm", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<GroupResponse>, t: Throwable) {
+                Log.e("DEBUG_API", "Lỗi gọi API: ${t.message}")
+                Toast.makeText(this@DetailGroupActivity, "Lỗi mạng: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
     private fun confirmLeaveGroup(userName: String) {
         AlertDialog.Builder(this)
             .setTitle("Xác nhận rời nhóm")

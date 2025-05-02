@@ -58,61 +58,63 @@
         android:id="@+id/teams_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Teams Detail"
+        android:text="Tasks Detail"
         android:textColor="@color/black"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar"/>
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/new_task_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:backgroundTint="#72E776"
-        android:text="Create Task"
-        android:textColor="@color/white"
-        app:cornerRadius="20dp"
-        app:icon="@drawable/ic_add"
-        app:iconGravity="textStart"
-        app:iconTint="@color/white"
-        app:layout_constraintBottom_toBottomOf="@id/teams_header"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/teams_header" />
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progressIndicator"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:indeterminate="false"
+        app:indicatorSize="150dp"
+        app:trackThickness="30dp"
+        app:indicatorColor="@color/green"
+        app:trackColor="@color/light_gray"
+        app:layout_constraintTop_toBottomOf="@id/teams_header"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
 
     <com.google.android.material.card.MaterialCardView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="2dp"
-    app:strokeColor="@color/light_gray"
-    app:strokeWidth="1dp"
-    android:id="@+id/teamdetail"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/teams_header">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="2dp"
+        app:strokeColor="@color/light_gray"
+        app:strokeWidth="1dp"
+        android:id="@+id/teamdetail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/progressIndicator">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="16dp"
+            app:layout_constraintTop_toBottomOf="@id/teams_header">
 
             <TextView
-                android:id="@+id/team_name"
+                android:id="@+id/task_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Team Name"
+                android:text="Task Name"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/team_description"
+                android:id="@+id/task_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Team description goes here"
+                android:text="Task description goes here"
                 android:textColor="@color/gray"
                 android:textSize="14sp" />
 
@@ -120,7 +122,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Members"
+                android:text="Todos"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
@@ -131,7 +133,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/membersRecyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="96dp"
+                    android:layout_height="152dp"
                     android:layout_marginTop="16dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -151,82 +153,29 @@
                     android:id="@+id/addMemberButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Add Member"
-                    android:backgroundTint="#71BC73" />
-
-                <Button
-                    android:id="@+id/removeButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
                     android:backgroundTint="#71BC73"
-                    android:text="Remove Member" />
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:gravity="end"
-                android:orientation="horizontal">
+                    android:text="Assign" />
 
                 <Button
                     android:id="@+id/updateButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:backgroundTint="#71BC73"
-                    android:text="Update Group" />
-
+                    android:layout_marginStart="8dp"
+                    android:text="Update" />
+                <Button
+                    android:id="@+id/removeButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:backgroundTint="#71BC73"
+                    android:text="Remove Task" />
             </LinearLayout>
 
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="2dp"
-        app:strokeColor="@color/light_gray"
-        app:strokeWidth="1dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/teamdetail">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="209dp"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <TextView
-                android:id="@+id/task_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Task Name"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="139dp">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/tasksRecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="117dp"
-                    android:layout_marginTop="16dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.cardview.widget.CardView>
-
-        </LinearLayout>
-
-    </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"

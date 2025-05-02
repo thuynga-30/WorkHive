@@ -1,70 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_background"
+    android:padding="10dp">
+    <TextView
+        android:id="@+id/dialog_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Create New Task"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/close_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- 🌄 Ảnh nền mờ -->
-    <ImageView
-        android:id="@+id/bgImage"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/logo_workhive"
-        android:scaleType="centerCrop"
-        android:alpha="0.1"
-        android:contentDescription="Background" />
-
-    <!-- 📄 Nội dung form tạo task -->
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="16dp">
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
+    <ImageButton
+        android:id="@+id/close_button"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_close"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/gray" />
+            <TextView
+                android:id="@+id/taskTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TiTle"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/dialog_title"/>
             <EditText
-                android:id="@+id/etTaskTitle"
+                android:id="@+id/editTaskTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Task title"
-                android:backgroundTint="#C8E6C9"/>
+                android:padding="12dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/edit_text_background"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/taskTitle"/>
+            <TextView
+                android:id="@+id/descriptionText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/editTaskTitle"/>
+
 
             <EditText
-                android:id="@+id/etTaskDescription"
+                android:id="@+id/editTaskDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Description"
+                android:background="@drawable/edit_text_background"
                 android:inputType="textMultiLine"
                 android:minLines="2"
+                android:padding="12dp"
                 android:layout_marginTop="8dp"
-                android:backgroundTint="#C8E6C9"/>
-
-            <Spinner
-                android:id="@+id/spinnerPriority"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/descriptionText"/>
+            <TextView
+                android:id="@+id/dueDateText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"/>
+                android:textSize="18sp"
+                android:text="Due Date"
+                android:textColor="@color/black"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/editTaskDescription"/>
 
-            <DatePicker
-                android:id="@+id/datePicker"
+            <LinearLayout
+                android:id="@+id/dueDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp" />
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/dueDateText">
 
-            <CheckBox
-                android:id="@+id/cbAssignJohn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="John Doe" />
+                <EditText
+                    android:id="@+id/editTextDate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Due Date"
+                    android:background="@drawable/edit_text_background"
+                    android:layout_marginTop="8dp"
+                    android:padding="12dp"
+                    android:focusable="false"
+                    android:inputType="text"
+                    android:clickable="true" />
 
-            <CheckBox
-                android:id="@+id/cbAssignAlice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Alice Smith" />
-
+                <ImageButton
+                    android:id="@+id/btnPickDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@android:drawable/ic_menu_my_calendar"
+                    android:contentDescription="Due Date"
+                    android:layout_marginTop="8dp"
+                    android:padding="12dp"
+                    android:background="?android:selectableItemBackgroundBorderless" />
+            </LinearLayout>
             <Button
                 android:id="@+id/btnCreateTask"
                 android:layout_width="wrap_content"
@@ -72,8 +122,9 @@
                 android:text="Create Task"
                 android:layout_marginTop="12dp"
                 android:layout_gravity="end"
-                android:backgroundTint="#C8E6C9"
-                android:textColor="@color/white" />
-        </LinearLayout>
-    </ScrollView>
-</FrameLayout>
+                android:backgroundTint="#72E776"
+                android:textColor="@color/white"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/dueDate"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

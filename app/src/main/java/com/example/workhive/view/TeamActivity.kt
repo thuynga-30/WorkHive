@@ -1,18 +1,16 @@
 package com.example.workhive.view
 
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-
 import com.example.workhive.R
+
+import com.example.workhive.adapter.CreateGroupDialog
 import com.example.workhive.adapter.TeamCardAdapter
 import com.example.workhive.api.RetrofitTeam
 import com.example.workhive.databinding.ActivityTeamsBinding
+import com.example.workhive.helper.BottomNavHelper
 import com.example.workhive.model.*
 import retrofit2.*
 
@@ -24,7 +22,7 @@ class TeamActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityTeamsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        BottomNavHelper.setupBottom(this,R.id.menu_home )
         adapter = TeamCardAdapter(teamList,
             onGroupDelete = { group ->
             deleteGroup(group)
