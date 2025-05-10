@@ -20,16 +20,14 @@ if ($method == 'POST' || $method == 'PUT') {
         echo json_encode(['success' => false, 'message' => 'Invalid JSON']);
         exit;
     }
-    $action = isset($data['action']) ? $data['action'] : '';
-} elseif ($method == 'GET') {
+}
     $action = isset($_GET['action']) ? $_GET['action'] : '';
 
-}
     switch ($method) {
         case 'POST':
             if ($action === 'create') createNotification($pdo,$data);
                 elseif ($action === 'delete') delete_by_id($pdo,$data);
-                    elseif ($action === 'delete_all') delete_all($pdo,$data);
+                    elseif ($action === 'delete_all') delete_all($pdo);
             break;
         
         case 'GET':
@@ -37,24 +35,22 @@ if ($method == 'POST' || $method == 'PUT') {
             break;
         case 'PUT':
             if ($action === 'mark_asRead') markNotificationAsRead($pdo, $data);
-                else if ($action === 'mark_all') mark_all_as_read($pdo, $data);
+                else if ($action === 'mark_all') mark_all_as_read($pdo);
             break;
         default:
             echo json_encode(['success' => false, 'message' => 'Invalid request']);
     }
 
-
 function createNotification($pdo,$data) {
-    // $headers = apache_request_headers();
+    $headers = apache_request_headers();
 
-    // if (!isset($headers['Authorization'])) {
-    //     http_response_code(401);
-    //     echo json_encode(['success' => false, 'message' => 'Unauthorized']);
-    //     return;
-    // }
+    if (!isset($headers['Authorization'])) {
+        http_response_code(401);
+        echo json_encode(['success' => false, 'message' => 'Unauthorized']);
+        return;
+    }
 
-    // $user_name = $headers['Authorization'];
-    $user_name = trim($data['user_name'] ?? '');
+    $user_name = $headers['Authorization'];
     $content = trim($data['content'] ?? '');
     if (empty($user_name) || empty($content)) {
         http_response_code(400);
@@ -73,16 +69,16 @@ function createNotification($pdo,$data) {
 }
 
 function get_notifications($pdo) {
-     // $headers = apache_request_headers();
+     $headers = apache_request_headers();
 
-    // if (!isset($headers['Authorization'])) {
-    //     http_response_code(401);
-    //     echo json_encode(['success' => false, 'message' => 'Unauthorized']);
-    //     return;
-    // }
+    if (!isset($headers['Authorization'])) {
+        http_response_code(401);
+        echo json_encode(['success' => false, 'message' => 'Unauthorized']);
+        return;
+    }
 
-    // $user_name = $headers['Authorization'];
-    $user_name = $_GET['user_name'] ?? '';
+    $user_name = $headers['Authorization'];
+
     if (!$user_name) {
         echo json_encode(['success' => false, 'message' => 'Missing user_name']);
         return;
@@ -104,17 +100,17 @@ function markNotificationAsRead($db, $data) {
     echo json_encode(['success' => true, 'message' => 'Mark as read']);
 }
 
-function mark_all_as_read($pdo,$data) {
-      // $headers = apache_request_headers();
+function mark_all_as_read($pdo) {
+    $headers = apache_request_headers();
 
-    // if (!isset($headers['Authorization'])) {
-    //     http_response_code(401);
-    //     echo json_encode(['success' => false, 'message' => 'Unauthorized']);
-    //     return;
-    // }
+    if (!isset($headers['Authorization'])) {
+        http_response_code(401);
+        echo json_encode(['success' => false, 'message' => 'Unauthorized']);
+        return;
+    }
 
-    // $user_name = $headers['Authorization'];
-    $user_name = $data['user_name'] ?? '';
+    $user_name = $headers['Authorization'];
+    // $user_name = $data['user_name'] ?? '';
 
 
     if (!$user_name) {
@@ -140,17 +136,17 @@ function delete_by_id($pdo,$data){
 
     echo json_encode(['success' => true, 'message' => 'Notification deleted']);
 }
-function delete_all($pdo,$data){
-     // $headers = apache_request_headers();
+function delete_all($pdo){
+     $headers = apache_request_headers();
 
-    // if (!isset($headers['Authorization'])) {
-    //     http_response_code(401);
-    //     echo json_encode(['success' => false, 'message' => 'Unauthorized']);
-    //     return;
-    // }
+    if (!isset($headers['Authorization'])) {
+        http_response_code(401);
+        echo json_encode(['success' => false, 'message' => 'Unauthorized']);
+        return;
+    }
 
-    // $user_name = $headers['Authorization'];
-    $user_name = $data['user_name'] ?? null;
+    $user_name = $headers['Authorization'];
+   
     
     if (!$user_name) {
         echo json_encode(['success' => false, 'message' => 'ID required']);

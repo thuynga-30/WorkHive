@@ -1,5 +1,6 @@
 <?php
 require_once 'connectdb.php';
+// require_once 'notification_manager.php';
 header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
@@ -7,7 +8,6 @@ header('Access-Control-Allow-Headers: Content-Type');
 
 ob_clean(); // Xóa sạch output đệm trước đó
 ob_start();
-
 session_start();
 $method = $_SERVER['REQUEST_METHOD'];
 if ($method == 'POST' || $method == 'PUT') {
@@ -87,7 +87,6 @@ function get_group_by_id($pdo, $data){
     }
 }
 function getMembersOfGroup($pdo, $data) {
-    
     $group_id = $data['group_id'] ?? null;
     if (!$group_id || !is_numeric($group_id)) {
         http_response_code(400);
@@ -296,15 +295,20 @@ function add_members($pdo,$data){
             return;
         }
       // Thêm thành viên với role 'member'
-      $stmt = $pdo->prepare("
-          INSERT INTO group_members (group_id, user_name, role)
-          VALUES (:group_id, :user_name, 'member')
-      ");
+      $stmt = $pdo->prepare("INSERT INTO group_members (group_id, user_name, role)
+          VALUES (?,?, 'member')");
       $stmt->execute([
-          ':group_id' => $group_id,
-          ':user_name' => $user_name
+           $group_id,$user_name
       ]);
-
+      $stmt1 = $pdo->prepare("SELECT name FROM  groups  
+                           WHERE group_id = ?");
+        $stmt1->execute([$group_id]);
+        $info = $stmt1->fetch();
+        if ($info) {
+            $name= $info['name'];
+        
+        sendNotification($pdo, $user_name, "Bạn vừa được thêm vào nhóm $name");
+        }
       echo json_encode(['success' => true, 'message' => 'Member added to group']);
 
   } catch (PDOException $e) {
@@ -316,34 +320,21 @@ function add_members($pdo,$data){
   }
 }
 function remove_user_from_group($pdo, $data) {
-    $headers = apache_request_headers();
-    if (!isset($headers['Authorization'])) {
-        http_response_code(401);
-        echo json_encode(['success' => false, 'message' => 'Unauthorized']);
-        return;
-    }
+
 
     $group_id = $data['group_id'] ?? null;
     $user_name = $data['user_name'] ?? null;
-    $userName =$headers['Authorization'];
+    // $userName =$headers['Authorization'];
     if (!$group_id || !$user_name) {
         echo json_encode(['success' => false, 'message' => 'Group ID and User Name are required']);
         return;
     }
 
     try {
-        // Kiểm tra xem người thực hiện có phải là leader của nhóm không
-        // $stmt = $pdo->prepare("SELECT * FROM group_members WHERE group_id = ? AND user_name = ? AND role = 'leader'");
-        // $stmt->execute([ $group_id, $userName]);
-
-        // if ($stmt->rowCount() === 0) {
-        //     echo json_encode(['success' => false, 'message' => 'Only the group leader can remove users']);
-        //     return;
-        // }
-
-        // Kiểm tra xem người dùng có tồn tại trong nhóm không
+        
         $stmt = $pdo->prepare("SELECT * FROM group_members WHERE group_id = ? AND user_name = ?");
         $stmt->execute([ $group_id,  $user_name]);
+        
 
         if ($stmt->rowCount() === 0) {
             echo json_encode(['success' => false, 'message' => 'User is not a member of the group']);
@@ -351,8 +342,20 @@ function remove_user_from_group($pdo, $data) {
         }
 
         // Xóa người dùng khỏi nhóm
+        
         $stmt = $pdo->prepare("DELETE FROM group_members WHERE group_id = ? AND user_name = ?");
         $stmt->execute([ $group_id, $user_name]);
+        $stmt = $pdo->prepare("DELETE FROM tasks WHERE group_id = ? AND assigned_to = ?");
+        $stmt->execute([ $group_id, $user_name]);
+        $stmt1 = $pdo->prepare("SELECT name FROM  groups  
+                           WHERE group_id = ?");
+        $stmt1->execute([$group_id]);
+        $info = $stmt1->fetch();
+        if ($info) {
+            $name= $info['name'];
+        
+        sendNotification($pdo, $user_name, "Bạn vừa bị xóa ra khỏi nhóm $name");
+    }
 
         echo json_encode(['success' => true, 'message' => 'User removed from group successfully']);
     } catch (PDOException $e) {
@@ -400,6 +403,26 @@ function update_group($pdo,$data) {
                 echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
             }
         }
-}
-?>
 
+}
+function sendNotification($pdo, $user_name, $message) {
+    try {
+        if (empty($user_name) || empty($message)) {
+            error_log("Notification Error: Missing user_name or message");
+            return false;
+        }
+
+        $stmt = $pdo->prepare("INSERT INTO notifications (user_name, content) VALUES (?, ?)");
+        if ($stmt->execute([$user_name, $message])) {
+            return true;
+        } else {
+            error_log("Notification Error: Failed to insert notification");
+            return false;
+        }
+    } catch (PDOException $e) {
+        error_log("Notification Error: " . $e->getMessage());
+        return false;
+    }
+}
+
+?>
