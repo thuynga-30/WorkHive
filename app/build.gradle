@@ -54,11 +54,9 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'com.google.android.material:material:1.11.0' // hoặc version mới nhất
-
-    implementation 'com.google.android.material:material:1.x.x'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
-    implementation 'com.google.android.material:material:1.6.1'
     implementation 'com.github.Philjay:mpandroidchart:3.1.0'
+
 }
 
 

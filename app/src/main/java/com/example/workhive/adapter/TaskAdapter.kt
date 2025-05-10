@@ -7,18 +7,18 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.workhive.api.RetrofitTask
 import com.example.workhive.databinding.ItemTaskBinding
 import com.example.workhive.model.*
-import com.example.workhive.view.DetailGroupActivity
 import com.example.workhive.view.DetailTaskActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class TaskAdapter(
-    private val taskList: List<Task>,
+    private val taskList: MutableList<Task>,
     private val onGroupClicked: (Task) -> Unit, // <- Thêm callback này
     private val onGroupDelete : (Task)-> Unit
 ): RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
@@ -55,10 +55,36 @@ class TaskAdapter(
                 detailTask.setOnClickListener {
                     showDetailTask(task)
                 }
+                updateButton.setOnClickListener {
+                    showUpdateDialog(task)
+                }
                 root.setOnClickListener {
                     onGroupClicked(task) // <- Gọi callback khi click vào item
                 }
             }
+        }
+        fun updateTask(updatedTask: Task, position: Int) {
+            taskList[position] = updatedTask
+            notifyItemChanged(position)
+        }
+        private fun showUpdateDialog(task: Task) {
+            val dialog = UpdateTaskDialog(
+                task.task_id,
+                currentName = task.title,
+                currentDesc = task.description,
+                currentDate = task.due_date
+            ){newTitle, newDesc, newDate ->
+                val updatedTask = task.copy(
+                    title = newTitle,
+                    description = newDesc,
+                    due_date = newDate)
+
+            updateTask(updatedTask, position)
+            }
+            dialog.show(
+                (binding.root.context as AppCompatActivity).supportFragmentManager,
+                "UpdateGroupDialog"
+            )
         }
 
 

@@ -18,6 +18,7 @@ import retrofit2.Response
 
 class TeamCardAdapter(
     private val teams: MutableList<Group>,
+    private val onGroupClicked: (Group) -> Unit,
     private val onGroupDelete: (Group) -> Unit
 ) : RecyclerView.Adapter<TeamCardAdapter.TeamViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamViewHolder {
@@ -50,6 +51,9 @@ class TeamCardAdapter(
                 }
                 detailButton.setOnClickListener {
                     showDetailGroup(team)
+                }
+                root.setOnClickListener {
+                    onGroupClicked(team) // <- Gọi callback khi click vào item
                 }
             }
         }

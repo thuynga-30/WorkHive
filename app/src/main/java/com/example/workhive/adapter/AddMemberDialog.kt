@@ -2,6 +2,7 @@ package com.example.workhive.adapter
 
 import android.content.Context.MODE_PRIVATE
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -63,6 +64,7 @@ class AddMemberDialog(private val groupId: Int, private val onMemberAdded: (Stri
             }
 
             override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
+                Log.d("ERROR","Error: ${t.message}")
                 Toast.makeText(context, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })

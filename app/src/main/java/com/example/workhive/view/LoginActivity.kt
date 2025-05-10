@@ -41,7 +41,7 @@ class LoginActivity : AppCompatActivity() {
                 val sharedPref = getSharedPreferences("USER_SESSION", MODE_PRIVATE)
                 sharedPref.edit().putString("USER_NAME", response.user?.user_name).apply()
                 Toast.makeText(this, "Login successful!", Toast.LENGTH_SHORT).show()
-                startActivity(Intent(this, TeamActivity::class.java))
+                startActivity(Intent(this, HomeActivity::class.java))
                 finish()
             } else {
                 Toast.makeText(this, response.message ?: "Login failed", Toast.LENGTH_SHORT).show()

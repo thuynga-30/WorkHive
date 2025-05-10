@@ -60,16 +60,19 @@
         <EditText
             android:id="@+id/editPass"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"/>
 
         <Button
             android:id="@+id/btnOk"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="#71BC73"
             android:text="LogIn" />
         <Button
             android:id="@+id/btnDk"
             android:layout_width="wrap_content"
+            android:backgroundTint="#71BC73"
             android:layout_height="wrap_content"
             android:text="SignUP" />
         <LinearLayout
@@ -79,12 +82,7 @@
             android:layout_marginTop="20dp">
 
 
-            <com.google.android.gms.common.SignInButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#00DB4437"
-                android:textColor="@android:color/black"
-                android:textStyle="bold" />
+
         </LinearLayout>
 
     </LinearLayout>

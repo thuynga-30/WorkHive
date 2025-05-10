@@ -6,9 +6,9 @@ import retrofit2.http.*
 
 interface TeamApi {
     @GET("team_manager.php")
-    fun getGroups(
+    suspend fun getGroups(
         @Header("Authorization") userName: String
-    ): Call<ApiResponse>
+    ): ApiResponse
 
     @GET("team_manager.php")
     fun getMembersOfGroup(
@@ -37,9 +37,9 @@ interface TeamApi {
         @Body body: DeleteGroupRequest
     ): Call<DeleteResponse>
     @POST("team_manager.php?remove_user=1")
-    fun removeMember(
+    suspend fun removeMember(
         @Header("Authorization") userName: String,
-        @Body body: RemoveUserRequest): Call<DeleteResponse>
+        @Body body: RemoveUserRequest): DeleteResponse
     @PUT("team_manager.php")
     fun updateGroup(
         @Header("Authorization") userName: String,

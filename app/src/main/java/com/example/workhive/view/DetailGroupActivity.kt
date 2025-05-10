@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.workhive.R
 import com.example.workhive.adapter.AddMemberDialog
@@ -16,7 +17,9 @@ import com.example.workhive.adapter.UpdateGroupDialog
 import com.example.workhive.api.RetrofitTask
 import com.example.workhive.api.RetrofitTeam
 import com.example.workhive.databinding.TeamsDetailBinding
+import com.example.workhive.helper.BottomNavHelper
 import com.example.workhive.model.*
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,17 +29,21 @@ class DetailGroupActivity: AppCompatActivity() {
     private lateinit var adapter: DetailAdapter
     private lateinit var taskAdapter: TaskAdapter
     private lateinit var group: Group
-    private lateinit var task: Task
     private var members: MutableList<Members> = mutableListOf()  // <- sửa thành mutableList
     private var tasks = mutableListOf<Task>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= TeamsDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        BottomNavHelper.setupBottom(this,R.id.menu_home )
         val sharedPref = getSharedPreferences("USER_SESSION", MODE_PRIVATE)
         val userName = sharedPref.getString("USER_NAME", "") ?: ""
         val groupId = intent.getIntExtra("GROUP_ID", -1)
+        if (groupId == -1) {
+            Toast.makeText(this, "Không tìm thấy thông tin nhóm", Toast.LENGTH_SHORT).show()
+            finish()
+            return
+        }
         val groupName = intent.getStringExtra("GROUP_NAME") ?: "Unknown"
         val groupDescription = intent.getStringExtra("GROUP_DESCRIPTION") ?: ""
         val groupMembers = intent.getStringArrayListExtra("GROUP_MEMBERS") ?: arrayListOf()
@@ -191,34 +198,27 @@ class DetailGroupActivity: AppCompatActivity() {
     }
 
     private fun leaveGroup(userName: String) {
-        val request = RemoveUserRequest(group.group_id, userName)
-        RetrofitTeam.teamApi.removeMember(userName, request).enqueue(object :
-            Callback<DeleteResponse> {
-            override fun onResponse(call: Call<DeleteResponse>, response: Response<DeleteResponse>) {
-                if (response.isSuccessful && response.body()?.success == true) {
-                    Toast.makeText(
-                        this@DetailGroupActivity,
-                        "Bạn đã rời khỏi nhóm",
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                    val resultIntent = Intent()
-                    resultIntent.putExtra("REMOVED_GROUP_ID", group.group_id)
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitTeam.teamApi.removeMember(
+                    userName,
+                    RemoveUserRequest(group.group_id, userName)
+                )
+                if (response.success) {
+                    val resultIntent = Intent().apply {
+                        putExtra("REMOVED_GROUP_ID", group.group_id)
+                    }
                     setResult(RESULT_OK, resultIntent)
-                    finish()  // hoặc quay về danh sách nhóm
+                    finish()
                 } else {
-                    Toast.makeText(
-                        this@DetailGroupActivity,
-                        response.body()?.message ?: "Thất bại",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(this@DetailGroupActivity, response.message ?: "Thất bại", Toast.LENGTH_SHORT).show()
                 }
+            } catch (e: Exception) {
+                Toast.makeText(this@DetailGroupActivity, "Lỗi mạng: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
             }
-            override fun onFailure(call: Call<DeleteResponse>, t: Throwable) {
-                Toast.makeText(this@DetailGroupActivity, "Lỗi mạng: ${t.message}", Toast.LENGTH_SHORT).show()
-            }
-        })
+        }
     }
+
 
     private fun loadGroupMembers(groupId: Int) {
 
@@ -279,22 +279,31 @@ class DetailGroupActivity: AppCompatActivity() {
         val sharedPref = getSharedPreferences("USER_SESSION", MODE_PRIVATE)
         val userName = sharedPref.getString("USER_NAME", "") ?: ""
         val request = RemoveUserRequest(group.group_id, memberToRemove)
-
-        RetrofitTeam.teamApi.removeMember(userName, request).enqueue(object :
-            Callback<DeleteResponse> {
-            override fun onResponse(call: Call<DeleteResponse>, response: Response<DeleteResponse>) {
-                if (response.isSuccessful && response.body()?.success == true) {
-                    Toast.makeText(this@DetailGroupActivity, "Đã xóa $memberToRemove ra khỏi nhóm", Toast.LENGTH_SHORT).show()
-                    loadGroupMembers(group.group_id)
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitTeam.teamApi.removeMember(userName, request)
+                if (response.success) {
+                    Toast.makeText(
+                        this@DetailGroupActivity,
+                        "Đã xóa $memberToRemove ra khỏi nhóm",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    loadGroupMembers(group.group_id) // <-- hoặc reload UI ở đây
                 } else {
-                    Toast.makeText(this@DetailGroupActivity, response.body()?.message ?: "Thất bại", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this@DetailGroupActivity,
+                        response.message ?: "Thất bại",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
+            } catch (e: Exception) {
+                Toast.makeText(
+                    this@DetailGroupActivity,
+                    "Lỗi mạng: ${e.localizedMessage}",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
-
-            override fun onFailure(call: Call<DeleteResponse>, t: Throwable) {
-                Toast.makeText(this@DetailGroupActivity, "Lỗi mạng: ${t.message}", Toast.LENGTH_SHORT).show()
-            }
-        })
+        }
     }
 }
 

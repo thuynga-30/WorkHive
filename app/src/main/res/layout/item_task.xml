@@ -73,7 +73,13 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="#71BC73"
                     android:text="Remove"/>
-
+                <Button
+                    android:id="@+id/updateButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#71BC73"
+                    android:layout_marginStart="8dp"
+                    android:text="Update" />
                 <Button
                     android:id="@+id/detailTask"
                     android:layout_width="wrap_content"

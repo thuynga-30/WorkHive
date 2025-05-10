@@ -46,11 +46,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:backgroundTint="#71BC73"
+                android:padding="6dp"
                 android:text="Remove Group" />
 
             <Button
                 android:id="@+id/detailButton"
                 android:layout_width="wrap_content"
+                android:backgroundTint="#71BC73"
+                android:layout_marginStart="5dp"
                 android:layout_height="wrap_content"
                 android:text="Detail" />
     </LinearLayout>
