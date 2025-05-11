@@ -6,6 +6,8 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import com.bumptech.glide.Glide
+import com.example.workhive.R
 import com.example.workhive.databinding.ActivityRegisterBinding
 import com.example.workhive.model.Users
 import com.example.workhive.viewmodel.RegisterViewModel
@@ -39,6 +41,11 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         observeViewModel()
+        Glide.with(this)
+            .asGif()
+            .load(R.drawable.logo) // hoặc R.raw.logo nếu đặt ở res/raw
+            .into(binding.logo)
+
     }
 
     private fun observeViewModel() {
