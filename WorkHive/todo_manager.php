@@ -29,7 +29,6 @@ switch ($method) {
     case 'POST':
         if ($action === 'create') create_task($pdo, $data);
         elseif ($action ==='createSubTask')  createSubTask($pdo,$data);
-        // else if ($action === 'assign') assign_task($pdo, $input);
         else if ($action === 'delete') delete_SubTask($pdo, $data);
         else if ($action === 'remove') remove_task($pdo,$data);
         break;
@@ -136,7 +135,7 @@ function update_status($pdo, $data) {
 }
 
 function checkOverdueTasksAndNotify($pdo) {
-    $stmt = $pdo->prepare("SELECT task_id, title, assigned_to, due_date 
+    $stmt = $pdo->prepare("SELECT task_id, title, assigned_to, group_id, due_date 
                            FROM tasks 
                            WHERE due_date < NOW() 
                              AND status != 'Done'
@@ -146,20 +145,29 @@ function checkOverdueTasksAndNotify($pdo) {
 
     foreach ($tasks as $task) {
         $recipient = $task['assigned_to'];
+        $group_id = $task['group_id'];
     if (empty($recipient)) continue; 
         $task_title = $task['title'];
         $due_date = date('d/m/Y', strtotime($task['due_date']));
         $message = "Công việc \"{$task_title}\" giao cho {$recipient} đã quá hạn vào ngày {$due_date}";
 
-        sendNotification($pdo, $recipient, $message);
+         $leaderStmt = $pdo->prepare("
+                SELECT user_name 
+                FROM group_members 
+                WHERE group_id = ? AND role = 'LEADER'
+            ");
+            $leaderStmt->execute([$group_id]);
+            $leader = $leaderStmt->fetch(PDO::FETCH_ASSOC);
 
+            if ($leader) {
+                $leader_name = $leader['user_name'];
+                sendNotification($pdo, $leader_name, $message);
+            }
         // Đánh dấu đã gửi thông báo
         $update = $pdo->prepare("UPDATE tasks SET overdue_notified = TRUE WHERE task_id = ?");
         $update->execute([$task['task_id']]);
     }
 }
-
-
 function getTaskProgress($pdo) {
     $parent_id = $_GET['task_id'] ?? null;
     if (!$parent_id) {
