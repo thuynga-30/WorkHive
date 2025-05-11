@@ -12,7 +12,7 @@
     <item
         android:id="@+id/menu_reminders"
         android:icon="@drawable/ic_notifications"
-        android:title="Reminders" />
+        android:title="Notify" />
     <item
         android:id="@+id/menu_teams"
         android:icon="@drawable/ic_teams"

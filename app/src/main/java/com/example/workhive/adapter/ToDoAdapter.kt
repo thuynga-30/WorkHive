@@ -5,7 +5,9 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.example.workhive.R
 import com.example.workhive.api.RetrofitTask
 import com.example.workhive.databinding.ItemTaskBinding
 import com.example.workhive.databinding.ItemTaskDeadlineBinding
@@ -36,13 +38,11 @@ class ToDoAdapter(
             binding.taskTitle.text = task.title
             binding.taskDueDate.text =task.due_date
             binding.taskStatus.text = task.status
+            updateStatusColor(task.status, binding)
             updateButtonUI(task.status, binding)
             binding.btnUpdateStatus.setOnClickListener {
                 val newStatus = when (task.status) {
-                    "Pending" -> {
-                        Color.BLACK
-                        "Doing"
-                    }
+                    "Pending" -> "Doing"
                     "Doing" -> "Done"
                     else -> task.status // Không thay đổi nếu đã "Done"
                 }
@@ -53,10 +53,21 @@ class ToDoAdapter(
             }
     }
 
+    private fun updateStatusColor(status: String, binding: ItemTaskDeadlineBinding) {
+        val color = when (status) {
+            "Pending" -> R.color.pending
+            "Doing" -> R.color.doing
+            "Done" -> R.color.done
+            "Over Due" -> R.color.over
+            else -> R.color.black // Mặc định nếu không khớp
+        }
+        binding.taskStatus.setTextColor(ContextCompat.getColor(binding.root.context, color))
+    }
+
+
     private fun updateButtonUI(status: String, binding: ItemTaskDeadlineBinding) {
         when (status) {
             "Pending" -> {
-
                 binding.btnUpdateStatus.text = "Doing"
                 binding.btnUpdateStatus.isEnabled = true
             }

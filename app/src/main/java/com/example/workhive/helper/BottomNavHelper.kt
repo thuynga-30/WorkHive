@@ -8,6 +8,7 @@ import com.example.workhive.R
 import com.example.workhive.view.DetailGroupActivity
 import com.example.workhive.view.HomeActivity
 import com.example.workhive.view.LoginActivity
+import com.example.workhive.view.NotifyActivity
 import com.example.workhive.view.TeamActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -42,7 +43,10 @@ object BottomNavHelper {
                 true
             }
             R.id.menu_reminders -> {
-                Toast.makeText(activity, "Thông Báo", Toast.LENGTH_SHORT).show()
+                if (activity !is NotifyActivity){
+                    activity.startActivity(Intent(activity, NotifyActivity::class.java))
+                    activity.finish()
+                }
                 true
             }
             R.id.menu_teams -> {

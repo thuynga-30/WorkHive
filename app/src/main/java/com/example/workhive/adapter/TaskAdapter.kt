@@ -8,7 +8,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.example.workhive.R
 import com.example.workhive.api.RetrofitTask
 import com.example.workhive.databinding.ItemTaskBinding
 import com.example.workhive.model.*
@@ -42,6 +44,9 @@ class TaskAdapter(
                 tvTaskDesc.text = task.description
                 tvTaskDate.text = task.due_date
                 tvTaskStatus.text = task.status
+                if (task.status == "Over Due") {
+                    tvTaskStatus.setTextColor(ContextCompat.getColor(itemView.context, R.color.red))
+                }
                 removeTaskButton.setOnClickListener {
                     AlertDialog.Builder(itemView.context)
                         .setTitle("Xác nhận")

@@ -23,6 +23,9 @@ import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class DetailGroupActivity: AppCompatActivity() {
     private lateinit var binding: TeamsDetailBinding
@@ -114,6 +117,11 @@ class DetailGroupActivity: AppCompatActivity() {
                     val tasksResponse = response.body()
                     if (tasksResponse != null && tasksResponse.success) {
                         tasks.clear()
+                        tasksResponse.tasks?.forEach { task ->
+                            if (isOverdue(task.due_date.toString()) && task.status != "Done") {
+                                task.status = "Over Due" // Đặt trạng thái thành "Over"
+                            }
+                        }
                         tasksResponse.tasks?.let { tasks.addAll(it) }
                         taskAdapter.notifyDataSetChanged()
 
@@ -124,6 +132,18 @@ class DetailGroupActivity: AppCompatActivity() {
                 } else {
                     Log.e("DEBUG_API_TASK", "Error body: ${response.errorBody()?.string()}")
                     Toast.makeText(this@DetailGroupActivity, "Server error", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            private fun isOverdue(dueDate: String): Boolean {
+                return try {
+                    val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                    val taskDate = format.parse(dueDate)
+                    val currentDate = Date()
+
+                    taskDate != null && taskDate.before(currentDate) // Quá hạn nếu trước ngày hiện tại
+                } catch (e: Exception) {
+                    false // Nếu lỗi định dạng, mặc định là không quá hạn
                 }
             }
 

@@ -4,16 +4,13 @@ import com.google.gson.GsonBuilder
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-object RetrofitTask {
-    val gson = GsonBuilder()
-        .setLenient()
-        .create()
+object RetrofitNotify {
     private const val BASE_URL = "http://192.168.2.132/api/WorkHive/"
-    val taskApi: TaskApi by lazy {
+    val notifyApi: NotifyApi by lazy {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create(gson))
+            .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(TaskApi::class.java)
+            .create(NotifyApi::class.java)
     }
 }

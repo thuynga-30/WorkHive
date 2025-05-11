@@ -116,7 +116,7 @@ class HomeActivity : AppCompatActivity() {
                                 task.status = "Over Due" // Cập nhật trạng thái thành Over Due
                             }
                             // Kiểm tra nếu task gần hết hạn và đưa vào danh sách upcomingTasks
-                            if (dueDate.isAfter(today) && dueDate.isBefore(today.plusDays(7))) {
+                            if (dueDate == LocalDate.now() ||dueDate.isAfter(today) && dueDate.isBefore(today.plusDays(4))) {
                                 upcomingTasks.add(task)
                             }
                         } catch (e: Exception) {

@@ -29,7 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Due: 2025-05-10"
-                android:textColor="#FF0000" />
+                android:textColor="#817878" />
         </LinearLayout>
 
         <LinearLayout
@@ -43,6 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="Pending"
+                android:textColor="@color/gray"
                 android:textStyle="italic" />
             <Button
                 android:id="@+id/btn_update_status"
