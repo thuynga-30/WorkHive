@@ -347,6 +347,8 @@ function remove_user_from_group($pdo, $data) {
         $stmt->execute([ $group_id, $user_name]);
         $stmt = $pdo->prepare("DELETE FROM tasks WHERE group_id = ? AND assigned_to = ?");
         $stmt->execute([ $group_id, $user_name]);
+        $stmt = $pdo->prepare("DELETE FROM evaluations WHERE group_id = ? AND evaluated_user = ?");
+        $stmt->execute([ $group_id, $user_name]);
         $stmt1 = $pdo->prepare("SELECT name FROM  groups  
                            WHERE group_id = ?");
         $stmt1->execute([$group_id]);

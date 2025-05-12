@@ -40,16 +40,15 @@ switch ($method) {
         if ($action === 'group') get_tasks_by_group($pdo);
             else if ($action === 'user') get_tasks_by_user($pdo);
                 else if ($action === 'stats_group') getTaskProgress($pdo);
-                     else if ($action === 'stats_user') get_user_progress_stats($pdo);
-                        else if ($action ==='subtask')  get_subtask_by_group($pdo);
-                            else if ($action ==='check_over') checkOverdueTasksAndNotify($pdo);
+                     else if ($action ==='subtask')  get_subtask_by_group($pdo);
+                        else if ($action ==='check_over') checkOverdueTasksAndNotify($pdo);
         break;
         
     default:
         echo json_encode(['success' => false, 'message' => 'Invalid request']);
 }
 function createSubTask($pdo, $data) {
-    $parent_id = $data['task_id'] ?? null; // Quan trọng: Lấy đúng parent_id!
+    $parent_id = $data['task_id'] ?? null;
     $title = $data['title'] ?? '';
     $description = $data['description'] ?? '';
     $assigned_to = $data['assigned_to'] ?? null;
@@ -126,7 +125,7 @@ function update_status($pdo, $data) {
 
     if ($info) {
         $task_title = $info['title'];
-        $recipient = $info['created_by']; // hoặc chọn $info['assigned_to'] nếu bạn muốn
+        $recipient = $info['created_by']; 
         sendNotification($pdo, $recipient, "$task_title đã hoàn thành");
     }
 }
@@ -334,41 +333,7 @@ function get_tasks_by_user($pdo) {
     echo json_encode(['success' => true, 'tasks' => $tasks]);
 }
 
-function get_user_progress_stats($pdo) {
-    $headers = apache_request_headers();
 
-    if (!isset($headers['Authorization'])) {
-        http_response_code(401);
-        echo json_encode(['success' => false, 'message' => 'Unauthorized']);
-        return;
-    }
-
-    $user_name = $headers['Authorization'];
-    // $user_name = $_GET['user_name'] ?? null;
-    // if (!$user_name) {
-    //     echo json_encode(['success' => false, 'message' => 'User name required']);
-    //     return;
-    // }
-
-    $stmt = $pdo->prepare("
-        SELECT status, COUNT(*) as total 
-        FROM tasks 
-        WHERE assigned_to = ?
-        GROUP BY status
-    ");
-    $stmt->execute([$user_name]);
-    $stats = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
-
-    echo json_encode([
-        'success' => true,
-        'user_name' => $user_name,
-        'stats' => [
-            'Pending' => (int)($stats['Pending'] ?? 0),
-            'Doing' => (int)($stats['Doing'] ?? 0),
-            'Done' => (int)($stats['Done'] ?? 0)
-        ]
-    ]);
-}
 
 
 ?>

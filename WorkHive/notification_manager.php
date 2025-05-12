@@ -11,16 +11,6 @@ ob_start();
 
 session_start();
 $method = $_SERVER['REQUEST_METHOD'];
-
-// if ($method == 'POST' ) {
-//     $input = file_get_contents('php://input');
-//     $data = json_decode($input, true);
-
-//     if (!is_array($data)) {
-//         echo json_encode(['success' => false, 'message' => 'Invalid JSON']);
-//         exit;
-//     }
-// }
     $action = isset($_GET['action']) ? $_GET['action'] : '';
 
     switch ($method) {
