@@ -5,6 +5,7 @@ import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -20,6 +21,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class TaskAdapter(
+    private val team :Group,
     private val taskList: MutableList<Task>,
     private val onGroupClicked: (Task) -> Unit, // <- Thêm callback này
     private val onGroupDelete : (Task)-> Unit
@@ -47,6 +49,10 @@ class TaskAdapter(
                 if (task.status == "Over Due") {
                     tvTaskStatus.setTextColor(ContextCompat.getColor(itemView.context, R.color.red))
                 }
+                val sharedPref = binding.root.context.getSharedPreferences("USER_SESSION", MODE_PRIVATE)
+                val userName = sharedPref.getString("USER_NAME", "") ?: ""
+
+                removeTaskButton.visibility = if (team.created_by == userName) View.VISIBLE else View.GONE
                 removeTaskButton.setOnClickListener {
                     AlertDialog.Builder(itemView.context)
                         .setTitle("Xác nhận")
@@ -60,6 +66,7 @@ class TaskAdapter(
                 detailTask.setOnClickListener {
                     showDetailTask(task)
                 }
+                updateButton.visibility = if (team.created_by == userName) View.VISIBLE else View.GONE
                 updateButton.setOnClickListener {
                     showUpdateDialog(task)
                 }
@@ -103,6 +110,8 @@ class TaskAdapter(
                 putExtra("TASK_STATUS", task.status)
                 putExtra("TASK_DUE_DATE", task.due_date)
                 putExtra("TASK_PARENT_ID", task.parent_id)
+                putExtra("GROUP_CREATED_BY", team.created_by)
+
             }
             itemView.context.startActivity(intent)
         }

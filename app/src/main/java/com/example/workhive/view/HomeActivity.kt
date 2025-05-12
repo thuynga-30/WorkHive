@@ -54,13 +54,9 @@ class HomeActivity : AppCompatActivity() {
         val cardOverView = findViewById<View>(R.id.cardTaskOverdue) // container là 1 FrameLayout
         cardoverBinding = CardTaskOverdueBinding.bind(cardOverView)  // Lấy ViewBinding cho layout card_task_overdue
 
-        // Call function to count task statuses
-
-
         // Setup Bottom Navigation
         BottomNavHelper.setupBottom(this, R.id.menu_home)
 
-        // Initialize the adapters for both todo tasks and upcoming deadlines
         todoAdapter = ToDoAdapter(todos, {
             countTaskStatuses(todos)
         }) { updatedTask ->
@@ -72,7 +68,6 @@ class HomeActivity : AppCompatActivity() {
         upcomingAdapter = ToDoAdapter(upcomingTasks, {
             countTaskStatuses(todos)
         }) { updatedTask ->
-            // Cập nhật lại giao diện nếu task cũng thuộc todos
             todoAdapter.notifyDataSetChanged()
         }
         // Set up RecyclerViews

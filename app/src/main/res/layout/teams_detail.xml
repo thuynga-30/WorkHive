@@ -96,7 +96,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp">
 
@@ -133,7 +133,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/membersRecyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="98dp"
                     android:layout_marginTop="16dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -153,8 +153,8 @@
                     android:id="@+id/addMemberButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Add Member"
-                    android:backgroundTint="#71BC73" />
+                    android:backgroundTint="#71BC73"
+                    android:text="Add Member" />
 
                 <Button
                     android:id="@+id/removeButton"
@@ -165,6 +165,7 @@
                     android:text="Remove Member" />
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -205,19 +206,19 @@
                 android:id="@+id/task_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Task Name"
+                android:text="Tasks"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="139dp">
+                android:layout_height="wrap_content">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/tasksRecyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="139dp"
+                    android:layout_height="230dp"
                     android:layout_marginTop="16dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

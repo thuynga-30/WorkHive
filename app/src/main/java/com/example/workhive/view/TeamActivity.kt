@@ -3,6 +3,7 @@ package com.example.workhive.view
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -60,10 +61,12 @@ class TeamActivity: AppCompatActivity() {
             },
             onGroupDelete = { group ->
             deleteGroup(group)
-        })
+        },
+            isFromLeaderPage = true)
         binding.teamsRecyclerView.adapter = adapter
         binding.teamsRecyclerView.layoutManager = LinearLayoutManager(this)
         loadSampleData()
+
         binding.newTeamButton.setOnClickListener{
             showCreateTeamDialog()
         }

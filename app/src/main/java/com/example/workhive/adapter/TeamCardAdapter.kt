@@ -1,17 +1,22 @@
 package com.example.workhive.adapter
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.workhive.api.RetrofitTeam
 import com.example.workhive.databinding.ItemTeamCardBinding
 import com.example.workhive.model.*
+import com.example.workhive.view.DetailEvaluationActivity
 import com.example.workhive.view.DetailGroupActivity
+import com.example.workhive.view.EvaluationActivity
+import com.example.workhive.view.TeamActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -19,7 +24,8 @@ import retrofit2.Response
 class TeamCardAdapter(
     private val teams: MutableList<Group>,
     private val onGroupClicked: (Group) -> Unit,
-    private val onGroupDelete: (Group) -> Unit
+    private val onGroupDelete: (Group) -> Unit,
+    private val isFromLeaderPage: Boolean
 ) : RecyclerView.Adapter<TeamCardAdapter.TeamViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamViewHolder {
         val binding= ItemTeamCardBinding.inflate(LayoutInflater.from(parent.context),parent,false)
@@ -39,6 +45,9 @@ class TeamCardAdapter(
             binding.apply {
                 teamName.text = team.name
                 teamDescription.text = team.description
+                val sharedPref = binding.root.context.getSharedPreferences("USER_SESSION", MODE_PRIVATE)
+                val userName = sharedPref.getString("USER_NAME", "") ?: ""
+                removeButton.visibility = if (isFromLeaderPage && team.created_by == userName) View.VISIBLE else View.GONE
                 removeButton.setOnClickListener {
                     AlertDialog.Builder(itemView.context)
                         .setTitle("Xác nhận")
@@ -49,13 +58,28 @@ class TeamCardAdapter(
                         .setNegativeButton("Huỷ", null)
                         .show()
                 }
-                detailButton.setOnClickListener {
-                    showDetailGroup(team)
+                val activity = itemView.context as? Activity
+                if (activity is TeamActivity) {
+                    detailButton.setOnClickListener {
+                        showDetailGroup(team)
+                    }
+                } else {
+                    detailButton.text ="View Rating"
+                    detailButton.setOnClickListener {
+                        showEvaluation(team)
+                    }
                 }
                 root.setOnClickListener {
                     onGroupClicked(team) // <- Gọi callback khi click vào item
                 }
             }
+        }
+
+        private fun showEvaluation(team: Group) {
+            val intent = Intent(itemView.context, DetailEvaluationActivity::class.java).apply {
+                putExtra("GROUP_ID", team.group_id)
+            }
+            itemView.context.startActivity(intent)
         }
 
 

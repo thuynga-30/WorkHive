@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -27,6 +28,7 @@ class DetailTaskActivity : AppCompatActivity() {
 
     private lateinit var binding: DetailTaskBinding
     private lateinit var task: Task
+    private lateinit var team :Group
     private var taskList: MutableList<Task> = mutableListOf()
     private lateinit var adapter: DetailTaskAdapter
 
@@ -45,7 +47,7 @@ class DetailTaskActivity : AppCompatActivity() {
         val taskStatus = intent.getStringExtra("TASK_STATUS") ?: ""
         val taskDuedate = intent.getStringExtra("TASK_DUE_DATE") ?: ""
         val taskParent = intent.getIntExtra("TASK_PARENT_ID", -1)
-
+        val groupCreatedBy = intent.getStringExtra("GROUP_CREATED_BY") ?: ""
         // Tạo đối tượng Task
         task = Task(
             taskId,
@@ -74,6 +76,12 @@ class DetailTaskActivity : AppCompatActivity() {
         } else {
             Toast.makeText(this, "Thiếu thông tin Group hoặc Task", Toast.LENGTH_SHORT).show()
         }
+        val sharedPref = getSharedPreferences("USER_SESSION", MODE_PRIVATE)
+        val userName = sharedPref.getString("USER_NAME", "") ?: ""
+        val isLeader = (groupCreatedBy == userName)
+
+        binding.removeButton.visibility = if (isLeader) View.VISIBLE else View.GONE
+        binding.addButton.visibility = if (isLeader) View.VISIBLE else View.GONE
         binding.addButton.setOnClickListener {
             showAddSubTask(task)
         }

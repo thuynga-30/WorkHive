@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -57,28 +58,33 @@ class DetailGroupActivity: AppCompatActivity() {
         adapter = DetailAdapter(members)
         binding.membersRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.membersRecyclerView.adapter = adapter
-        binding.newTaskButton.setOnClickListener{
-            showAddTask(groupId)
-        }
-        binding.addMemberButton.setOnClickListener {
-            showAddMember(group)
-        }
+
         if (userName == createdBy) {
             binding.removeButton.text = "Remove member"
             binding.removeButton.setOnClickListener {
                 showInputMemberToDeleteDialog()
+            }
+            binding.newTaskButton.setOnClickListener{
+                showAddTask(groupId)
+            }
+            binding.addMemberButton.setOnClickListener {
+                showAddMember(group)
+            }
+            binding.updateButton.setOnClickListener {
+                showUpdateGroup(group)
             }
         } else {
             binding.removeButton.text = "Leave group"
             binding.removeButton.setOnClickListener {
                 confirmLeaveGroup(userName)
             }
+            binding.updateButton.visibility = View.GONE
+            binding.addMemberButton.visibility = View.GONE
+            binding.newTaskButton.visibility = View.GONE
         }
-        binding.updateButton.setOnClickListener {
-            showUpdateGroup(group)
-        }
+
         loadGroupMembers(groupId)
-        taskAdapter = TaskAdapter(
+        taskAdapter = TaskAdapter(group,
             tasks,
             onGroupClicked = { task ->
 //

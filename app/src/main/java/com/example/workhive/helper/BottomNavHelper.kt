@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
 import com.example.workhive.R
 import com.example.workhive.view.DetailGroupActivity
+import com.example.workhive.view.EvaluationActivity
 import com.example.workhive.view.HomeActivity
 import com.example.workhive.view.LoginActivity
 import com.example.workhive.view.NotifyActivity
@@ -35,11 +36,10 @@ object BottomNavHelper {
                 true
             }
             R.id.menu_chat -> {
-//                if (activity !is DetailGroupActivity) {
-//                    activity.startActivity(Intent(activity, DetailGroupActivity::class.java))
-//                    activity.finish()
-//                }
-                Toast.makeText(activity, "Chat", Toast.LENGTH_SHORT).show()
+                if (activity !is EvaluationActivity) {
+                    activity.startActivity(Intent(activity, EvaluationActivity::class.java))
+                    activity.finish()
+                }
                 true
             }
             R.id.menu_reminders -> {

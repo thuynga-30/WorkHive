@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingVertical="12dp">
+
+    <TextView
+        android:id="@+id/tvUser"
+        android:layout_width="92dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="User Name"
+        android:textSize="16sp"
+        android:layout_marginStart="5dp"
+        android:textStyle="bold" />
+
+    <!-- Hoàn thành -->
+    <TextView
+        android:id="@+id/tvCompleted"
+        android:layout_width="47dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="Completed"
+        android:layout_marginStart="5dp"
+        android:textSize="16sp" />
+
+    <!-- Tổng nhiệm vụ -->
+    <TextView
+        android:id="@+id/tvTotal"
+        android:layout_width="52dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="Total Task"
+        android:layout_marginStart="5dp"
+        android:textSize="16sp" />
+
+    <!-- Xếp hạng -->
+    <TextView
+        android:id="@+id/tvRating"
+        android:layout_width="12dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.5"
+        android:gravity="center"
+        android:text="Rating"
+        android:layout_marginStart="5dp"
+        android:textSize="16sp" />
+</LinearLayout>
