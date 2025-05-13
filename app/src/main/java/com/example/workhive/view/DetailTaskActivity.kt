@@ -133,21 +133,21 @@ class DetailTaskActivity : AppCompatActivity() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_delete_member, null)
         val inputEditText = dialogView.findViewById<android.widget.EditText>(R.id.inputMemberName)
         val titleText = dialogView.findViewById<android.widget.TextView>(R.id.dialogMessage)
-        inputEditText.hint =" Nhập tiêu đề subtask"
-        titleText.text= "Nhập title subtask cần xóa:"
+        inputEditText.hint =" Enter subtask title"
+        titleText.text= "Enter the subtask title to delete:"
         AlertDialog.Builder(this)
-            .setTitle("Xoá sub task ra khỏi Task ")
+            .setTitle("Delete sub task from Task ")
             .setView(dialogView)
-            .setPositiveButton("Xoá") { _, _ ->
+            .setPositiveButton("Delete") { _, _ ->
                 val title = inputEditText.text.toString().trim()
                 if (title.isNotEmpty()) {
                     deleteTask(title)
 
                 } else {
-                    Toast.makeText(this, "Vui lòng nhập tên thành viên", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Please enter the title ", Toast.LENGTH_SHORT).show()
                 }
             }
-            .setNegativeButton("Huỷ", null)
+            .setNegativeButton("Cancle", null)
             .show()
     }
 
@@ -211,7 +211,6 @@ class DetailTaskActivity : AppCompatActivity() {
                             adapter.notifyDataSetChanged()
                 } else {
                     Log.e("DEBUG_API", "API lỗi: ${response.errorBody()?.string()}")
-                    Toast.makeText(this@DetailTaskActivity, "Không lấy được subtask", Toast.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
                 Log.e("DEBUG_API", "Lỗi mạng: ${e.message}")

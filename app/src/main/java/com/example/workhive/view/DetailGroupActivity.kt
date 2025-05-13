@@ -103,7 +103,7 @@ class DetailGroupActivity: AppCompatActivity() {
         if (index != -1) {
             tasks.removeAt(index)
             taskAdapter.notifyItemRemoved(index)
-            Toast.makeText(this, "Xoá task thành công", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Task deleted successfully", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -133,7 +133,6 @@ class DetailGroupActivity: AppCompatActivity() {
 
                     } else {
                         Log.e("API_ERROR", "Response body: ${response.errorBody()?.string()}")
-                        Toast.makeText(this@DetailGroupActivity, "Lỗi: ${tasksResponse?.success}", Toast.LENGTH_SHORT).show()
                     }
                 } else {
                     Log.e("DEBUG_API_TASK", "Error body: ${response.errorBody()?.string()}")
@@ -214,12 +213,12 @@ class DetailGroupActivity: AppCompatActivity() {
 
     private fun confirmLeaveGroup(userName: String) {
         AlertDialog.Builder(this)
-            .setTitle("Xác nhận rời nhóm")
-            .setMessage("Bạn có chắc chắn muốn rời khỏi nhóm không?")
-            .setPositiveButton("Rời nhóm") { _, _ ->
+            .setTitle("Confirm leaving the group")
+            .setMessage("Are you sure you want to leave the group?")
+            .setPositiveButton("Leave") { _, _ ->
                 leaveGroup(userName)
             }
-            .setNegativeButton("Huỷ", null)
+            .setNegativeButton("Cancle", null)
             .show()
     }
 
@@ -247,8 +246,6 @@ class DetailGroupActivity: AppCompatActivity() {
 
 
     private fun loadGroupMembers(groupId: Int) {
-
-        Log.d("DEBUG_API", "Gọi API lấy thành viên với group_id=$groupId")
 
         RetrofitTeam.teamApi.getMembersOfGroup(groupId).enqueue(object : Callback<MemberResponse> {
             override fun onResponse(call: Call<MemberResponse>, response: Response<MemberResponse>) {
@@ -286,18 +283,18 @@ class DetailGroupActivity: AppCompatActivity() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_delete_member, null)
         val inputEditText = dialogView.findViewById<android.widget.EditText>(R.id.inputMemberName)
         AlertDialog.Builder(this)
-            .setTitle("Xoá thành viên khỏi nhóm")
+            .setTitle("Remove member from group")
             .setView(dialogView)
-            .setPositiveButton("Xoá") { _, _ ->
+            .setPositiveButton("Delete") { _, _ ->
                 val memberName = inputEditText.text.toString().trim()
                 if (memberName.isNotEmpty()) {
                     deleteMember(memberName)
 
                 } else {
-                    Toast.makeText(this, "Vui lòng nhập tên thành viên", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Please enter member name", Toast.LENGTH_SHORT).show()
                 }
             }
-            .setNegativeButton("Huỷ", null)
+            .setNegativeButton("Cancle", null)
             .show()
     }
 

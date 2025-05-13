@@ -75,7 +75,6 @@ class DetailEvaluationActivity:AppCompatActivity() {
                 response: Response<GeneralResponse>
             ) {
                 if (response.isSuccessful && response.body()?.success == true) {
-                    Toast.makeText(this@DetailEvaluationActivity, "Đánh giá thành công", Toast.LENGTH_SHORT).show()
                     loadData(groupId)
                 } else {
                     Toast.makeText(this@DetailEvaluationActivity, "Thất bại: ${response.body()?.message}", Toast.LENGTH_SHORT).show()

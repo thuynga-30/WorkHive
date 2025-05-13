@@ -55,12 +55,12 @@ class TaskAdapter(
                 removeTaskButton.visibility = if (team.created_by == userName) View.VISIBLE else View.GONE
                 removeTaskButton.setOnClickListener {
                     AlertDialog.Builder(itemView.context)
-                        .setTitle("Xác nhận")
-                        .setMessage("Bạn có chắc muốn xoá task này không?")
-                        .setPositiveButton("Xoá") { _, _ ->
+                        .setTitle("Confirmation")
+                        .setMessage("Are you sure you want to delete this task?")
+                        .setPositiveButton("Delete") { _, _ ->
                             requestDelete(task)
                         }
-                        .setNegativeButton("Huỷ", null)
+                        .setNegativeButton("Cancle", null)
                         .show()
                 }
                 detailTask.setOnClickListener {

@@ -21,8 +21,8 @@ class EvaluationAdapter  ( private var evaluations: MutableList<Evaluation>
                 tvRating.text = evaluation.rating
                 tvRating.setTextColor(
                     when(evaluation.rating){
-                        "Tốt"-> Color.GREEN
-                        "Khá"-> Color.BLUE
+                        "Good"-> Color.GREEN
+                        "Quite Good"-> Color.BLUE
                         else -> Color.RED
                     }
                 )

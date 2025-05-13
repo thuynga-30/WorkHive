@@ -13,7 +13,6 @@ import com.example.workhive.adapter.TeamCardAdapter
 import com.example.workhive.api.RetrofitTeam
 import com.example.workhive.databinding.ActivityTeamsBinding
 import com.example.workhive.helper.BottomNavHelper
-import com.example.workhive.model.Evaluation
 import com.example.workhive.model.Group
 import kotlinx.coroutines.launch
 
@@ -61,10 +60,10 @@ class EvaluationActivity:AppCompatActivity() {
                     Toast.makeText(this@EvaluationActivity, response.message, Toast.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
-                Log.d("Error","Lỗi tải danh sách nhóm: ${e.localizedMessage}")
+                Log.d("Error","Error loading group list: ${e.localizedMessage}")
                 Toast.makeText(
                     this@EvaluationActivity,
-                    "Lỗi tải danh sách nhóm: ${e.localizedMessage}",
+                    "Error loading group list: ${e.localizedMessage}",
                     Toast.LENGTH_SHORT
                 ).show()
             }

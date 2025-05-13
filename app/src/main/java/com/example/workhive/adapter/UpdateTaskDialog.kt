@@ -43,6 +43,9 @@ class UpdateTaskDialog(
         binding.editTaskDescription.setText(currentDesc)
         binding.editTextDate.setText(currentDate)
         binding.btnCreateTask.text="Save"
+        binding.closeButton.setOnClickListener {
+            dismiss()
+        }
         binding.btnPickDate.setOnClickListener {
             val calendar = Calendar.getInstance()
             val year = calendar.get(Calendar.YEAR)

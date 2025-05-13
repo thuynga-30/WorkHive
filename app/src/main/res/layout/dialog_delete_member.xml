@@ -9,7 +9,7 @@
         android:id="@+id/dialogMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Nhập user_name người bạn muốn xoá:"
+        android:text="Enter the username you want to delete:"
         android:textSize="16sp"
         android:textColor="@android:color/black"
         android:layout_marginBottom="12dp" />
@@ -18,6 +18,6 @@
         android:id="@+id/inputMemberName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Nhập user_name"
+        android:hint="Enter the user_name"
         android:inputType="textPersonName" />
 </LinearLayout>

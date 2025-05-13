@@ -15,7 +15,6 @@ import com.example.workhive.databinding.ItemTeamCardBinding
 import com.example.workhive.model.*
 import com.example.workhive.view.DetailEvaluationActivity
 import com.example.workhive.view.DetailGroupActivity
-import com.example.workhive.view.EvaluationActivity
 import com.example.workhive.view.TeamActivity
 import retrofit2.Call
 import retrofit2.Callback
@@ -50,12 +49,12 @@ class TeamCardAdapter(
                 removeButton.visibility = if (isFromLeaderPage && team.created_by == userName) View.VISIBLE else View.GONE
                 removeButton.setOnClickListener {
                     AlertDialog.Builder(itemView.context)
-                        .setTitle("Xác nhận")
-                        .setMessage("Bạn có chắc muốn xoá nhóm này không?")
-                        .setPositiveButton("Xoá") { _, _ ->
+                        .setTitle("Confirmation")
+                        .setMessage("Are you sure you want to delete this group?")
+                        .setPositiveButton("Delete") { _, _ ->
                             requestDeleteGroup(team)
                         }
-                        .setNegativeButton("Huỷ", null)
+                        .setNegativeButton("Cancle", null)
                         .show()
                 }
                 val activity = itemView.context as? Activity
