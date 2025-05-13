@@ -126,7 +126,6 @@ function delete_group($pdo, $data) {
         return;
     }
     $userName = $headers['Authorization'];
-
     $group_id = $data['group_id'] ?? null;
 
     if (!$group_id || !is_numeric($group_id)) {
@@ -144,13 +143,12 @@ function delete_group($pdo, $data) {
             echo json_encode(['success' => false, 'message' => 'Only the creator of the group can delete it']);
             return;
         }
-
-
         // Xóa nhóm khỏi bảng `groups` và `group_members`
         $pdo->beginTransaction();
         $stmt = $pdo->prepare("DELETE FROM group_members WHERE group_id = ?");
         $stmt->execute([$group_id]);
-
+        $stmt = $pdo->prepare("DELETE FROM tasks WHERE group_id = ?");
+        $stmt->execute([$group_id]);
         $stmt = $pdo->prepare("DELETE FROM groups WHERE group_id = ?");
         $stmt->execute([$group_id]);
 

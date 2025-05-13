@@ -77,11 +77,11 @@ function create_evaluation($pdo){
         $rate_percent = ($total > 0) ? ($ontime / $total) : 0;
 
         if ($rate_percent >= 0.8) {
-            $rating = 'Tốt';
+            $rating = 'Good';
         } elseif ($rate_percent >= 0.5) {
-            $rating = 'Khá';
+            $rating = 'Quite Good';
         } else {
-            $rating = 'Trung bình';
+            $rating = 'Average';
         }
 
         $stmt = $pdo->prepare("
