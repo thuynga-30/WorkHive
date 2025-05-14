@@ -10,8 +10,8 @@ import retrofit2.http.*
 interface UserApi {
     @Headers("Content-Type: application/json")
     @POST("register.php")
-    fun register(@Body request: Users): Call<RegisterResponse>
+    suspend fun register(@Body request: Users): Response<RegisterResponse>
     @POST("login.php")
-    fun login(@Body request: LoginRequest): Call<LoginResponse>
+    suspend fun login(@Body request: LoginRequest): Response<LoginResponse>
 
 }

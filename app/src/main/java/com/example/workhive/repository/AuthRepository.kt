@@ -7,12 +7,13 @@ import com.example.workhive.model.LoginResponse
 import com.example.workhive.model.RegisterResponse
 import com.example.workhive.model.Users
 import retrofit2.Call
+import retrofit2.Response
 
 class AuthRepository {
-    fun login(request: LoginRequest): Call<LoginResponse> {
+    suspend fun login(request: LoginRequest): Response<LoginResponse> {
         return RetrofitClient.api.login(request)
     }
-    fun register(user: Users): Call<RegisterResponse> {
+    suspend fun register(user: Users): Response<RegisterResponse> {
         return RetrofitClient.api.register(user)
     }
 }

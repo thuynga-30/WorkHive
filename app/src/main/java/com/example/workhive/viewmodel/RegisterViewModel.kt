@@ -4,12 +4,12 @@ package com.example.workhive.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.workhive.model.RegisterResponse
 import com.example.workhive.model.Users
 import com.example.workhive.repository.AuthRepository
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.launch
+
 
 class RegisterViewModel : ViewModel() {
     private val authRepository = AuthRepository()
@@ -21,20 +21,18 @@ class RegisterViewModel : ViewModel() {
     val errorMessage: LiveData<String> = _errorMessage
 
     fun registerUser(user: Users) {
-        authRepository.register(user).enqueue(object : Callback<RegisterResponse> {
-            override fun onResponse(call: Call<RegisterResponse>, response: Response<RegisterResponse>) {
-                if (response.isSuccessful) {
-                    response.body()?.let {
-                        _registerResult.postValue(it)
-                    }
+        viewModelScope.launch {
+            try {
+                val response = authRepository.register(user)
+                if (response.isSuccessful && response.body() != null) {
+                    _registerResult.value = response.body()
                 } else {
-                    _errorMessage.postValue("Server error")
+                    _errorMessage.value = "Server error: ${response.code()}"
                 }
+            } catch (e: Exception) {
+                _errorMessage.value = "Network error: ${e.message}"
             }
-
-            override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
-                _errorMessage.postValue("Network error: ${t.message}")
-            }
-        })
+        }
     }
+
 }
